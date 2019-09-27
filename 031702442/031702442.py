@@ -14,18 +14,10 @@ p10=r'(市)'
 p11=r'(镇|街道|乡|\d+)'
 p12=r'\d+'
 p13=r'\d+.?\d+,\d+.?\d+'
-# slist='['
 s=input()
-#print(s)
-# if s=='':
-    # slist=slist.strip(',')+']'
-  # with open('2.txt','w')as q:
-       # q.write(str(slist))
-   # break
 match=re.search(p1,s,re.A)
 tel=match.group()
 s=s[:match.start()]+s[match.end():]
-#print(s)
 s0=s[0:1]
 s=s[2:]
 s=s.strip()
@@ -84,10 +76,8 @@ if match!=None and (re.search(p12,s[:match.end()],re.A)==None):
     s=s[match.end():]
 if s0=='1':
     s5=s
-    #string=r'{"姓名":"'+name+r'","手机":"'+str(tel)+r'","地址":["'+s1+r'","'+s2+r'","'+s3+r'","'+s4+r'","'+s5+r'"]},'
     list1=[s1,s2,s3,s4,s5]
     data={}
-   # data["level"]=s0
     data={'名字':name, '手机':tel,'地址':list1}
     string=json.dumps(data,ensure_ascii=False)
     
@@ -111,11 +101,9 @@ else:
         #print(s9)
         al=requests.get(url).text
         match=re.search(p13,str(al),re.I)
-        #print(match.group())
         url='https://restapi.amap.com/v3/geocode/regeo?output=xml&location='+match.group()+'&key=55102a2c4b79bf8c87cab849177e086a&radius=1000&extensions=base'
         al=requests.get(url).text
         al=str(al)
-        #print(al)
         p=re.compile('<province>(.+?)</')
         s1=p.findall(al)[0]
         p=re.compile('<city>(.+?)</')
@@ -129,16 +117,9 @@ else:
         s4=p.findall(al)[0]
     list1=[s1,s2,s3,s4,s5,s6,s7]
     data={'名字':name, '手机':tel,'地址':list1}
-   # data["level"]=s0
-   # data["名字"]=name
-    #data["手机"]=tel
-    #data["地址"]=list1
     string=json.dumps(data,ensure_ascii=False)
     #string=r'{"姓名":"'+name+r'","手机":"'+str(tel)+r'","地址":["'+s1+r'","'+s2+r'","'+s3+r'","'+s4+r'","'+s5+r'","'+s6+r'","'+s7+r'"]},'
 print(string)
-    #print(pp)
-#print(string)
 
-#print(string)
         
 
