@@ -19,7 +19,6 @@ while 1:
     s=input()
     if s=="END":
         break
-    main(s)
     match=re.search(p1,s,re.A)
     tel=match.group()
     s=s[:match.start()]+s[match.end():]
