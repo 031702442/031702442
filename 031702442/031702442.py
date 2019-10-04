@@ -15,112 +15,116 @@ p10=r'(市)'
 p11=r'(镇|街道|乡|\d+)'
 p12=r'\d+'
 p13=r'\d+.?\d+,\d+.?\d+'
-s=input()
-match=re.search(p1,s,re.A)
-tel=match.group()
-s=s[:match.start()]+s[match.end():]
-s0=s[0:1]
-s=s[2:]
-s=s.strip()
-s=s.strip('.')
-match=re.search(p8,s,re.A)
-name=s[:match.start()]
-s=s[match.end():]
-s9=s
-match=re.search(p2,s[:9],re.A)
-if (match==None)or(s[match.end()]=='市'):
-    s1=''
-elif (match.group()=='内蒙古')or(match.group()=='西藏'):
-    s1=match.group()+'自治区'
-elif match.group()=='宁夏':
-    s1=match.group()+'回族自治区'
-elif match.group()=='广西':
-    s1=match.group()+'回族自治区'
-elif match.group()=='新疆':
-    s1=match.group()+'维吾尔自治区'
-elif (match.group()=='北京')or(match.group()=='上海')or(match.group()=='天津')or(match.group()=='重庆')or(match.group()=='广西壮族自治区')or(match.group()=='宁夏回族自治区')or(match.group()=='新疆维吾尔自治区')or(match.group()=='内蒙古自治区')or(match.group()=='西藏自治区'):
-    s1=match.group()
-elif re.search(p9,match.group(),re.A)==None:
-    s1=match.group()+'省'
-else:
-    s1=match.group()
-if (match!=None) and(s[match.end()]!='市'):
+while 1:
+    s=input()
+    if s=="END":
+        break
+    match=re.search(p1,s,re.A)
+    tel=match.group()
+    s=s[:match.start()]+s[match.end():]
+    s0=s[0:1]
+    s=s[2:]
+    s=s.strip()
+    s=s.strip('.')
+    match=re.search(p8,s,re.A)
+    name=s[:match.start()]
     s=s[match.end():]
-match=re.search(p3,s,re.A)
-if match==None:
-    s2=''
-elif match.group()=='自治州':
-    s2=s[:match.end()]
-elif re.search(p10,match.group(),re.A)==None:
-    s2=match.group()+'市'
-else:
-    s2=match.group()
-if match!=None:
-    s=s[match.end():]
-if (s1=='上海')or(s1=='北京')or(s1=='天津')or(s1=='重庆'):
-    s2=s1+'市'
-if(s2=='上海市')or(s2=='北京市')or(s2=='天津市')or(s2=='重庆市'):
-    s1=s2[0:2]
-match=re.search(p4,s,re.A)
-if (match==None )or (re.search(p11,s[:match.end()],re.A)!=None):
-    s3=''
-else:
-    s3=s[:match.end()]
-if match!=None and (re.search(p11,s[:match.end()],re.A)==None):
-    s=s[match.end():]
-match=re.search(p5,s,re.A)
-if match==None or (re.search(p12,s[:match.end()],re.A)!=None):
-    s4=''
-else:
-    s4=s[:match.end()]
-if match!=None and (re.search(p12,s[:match.end()],re.A)==None):
-    s=s[match.end():]
-if s0=='1':
-    s5=s
-    list1=[s1,s2,s3,s4,s5]
-    data={}
-    data={'姓名':name, '手机':tel,'地址':list1}
-    string=json.dumps(data,ensure_ascii=False)
-    
-else:
-    match=re.search(p7,s,re.I)
-    if (match !=None):
-        s5=s[:match.start()]
-        s6=match.group()
-        s=s[match.end():]
+    s9=s
+    match=re.search(p2,s[:9],re.A)
+    if (match==None)or(s[match.end()]=='市'):
+        s1=''
+    elif (match.group()=='内蒙古')or(match.group()=='西藏'):
+        s1=match.group()+'自治区'
+    elif match.group()=='宁夏':
+        s1=match.group()+'回族自治区'
+    elif match.group()=='广西':
+        s1=match.group()+'回族自治区'
+    elif match.group()=='新疆':
+        s1=match.group()+'维吾尔自治区'
+    elif (match.group()=='北京')or(match.group()=='上海')or(match.group()=='天津')or(match.group()=='重庆')or(match.group()=='广西壮族自治区')or(match.group()=='宁夏回族自治区')or(match.group()=='新疆维吾尔自治区')or(match.group()=='内蒙古自治区')or(match.group()=='西藏自治区'):
+        s1=match.group()
+    elif re.search(p9,match.group(),re.A)==None:
+        s1=match.group()+'省'
     else:
-        s6=''
-        match=re.search(p6,s,re.A)
-        if match==None:
-            s5=''
-        else:
-            s5=s[:match.end()]
-            s=s[match.end():]
-    s7=s
-    if s0=='3':
-        url='https://restapi.amap.com/v3/geocode/geo?address='+s9+'&output=XML&key=55102a2c4b79bf8c87cab849177e086a'
-        #print(s9)
-        al=requests.get(url).text
-        match=re.search(p13,str(al),re.I)
-        url='https://restapi.amap.com/v3/geocode/regeo?output=xml&location='+match.group()+'&key=55102a2c4b79bf8c87cab849177e086a&radius=1000&extensions=base'
-        al=requests.get(url).text
-        al=str(al)
-        p=re.compile('<province>(.+?)</')
-        s1=p.findall(al)[0]
-        p=re.compile('<city>(.+?)</')
-        s2=p.findall(al)[0]
-        if (s1=='上海市')or( s1=='北京市')or( s1=='重庆市')or( s1=='天津市'):
-            s2=s1
-            s1=s1[0:2]
-        p=re.compile('<district>(.+?)</')
-        s3=p.findall(al)[0]
-        p=re.compile('<township>(.+?)</')
-        s4=p.findall(al)[0]
-    list1=[s1,s2,s3,s4,s5,s6,s7]
-    data={'姓名':name, '手机':tel,'地址':list1}
-    string=json.dumps(data,ensure_ascii=False)
-    #string=r'{"姓名":"'+name+r'","手机":"'+str(tel)+r'","地址":["'+s1+r'","'+s2+r'","'+s3+r'","'+s4+r'","'+s5+r'","'+s6+r'","'+s7+r'"]},'
-print(string)
-
+        s1=match.group()
+    if (match!=None) and(s[match.end()]!='市'):
+        s=s[match.end():]
+    match=re.search(p3,s,re.A)
+    if match==None:
+        s2=''
+    elif match.group()=='自治州':
+        s2=s[:match.end()]
+    elif re.search(p10,match.group(),re.A)==None:
+        s2=match.group()+'市'
+    else:
+        s2=match.group()
+    if match!=None:
+        s=s[match.end():]
+    if (s1=='上海')or(s1=='北京')or(s1=='天津')or(s1=='重庆'):
+        s2=s1+'市'
+    if(s2=='上海市')or(s2=='北京市')or(s2=='天津市')or(s2=='重庆市'):
+        s1=s2[0:2]
+    match=re.search(p4,s,re.A)
+    if (match==None )or (re.search(p11,s[:match.end()],re.A)!=None):
+        s3=''
+    else:
+        s3=s[:match.end()]
+    if match!=None and (re.search(p11,s[:match.end()],re.A)==None):
+        s=s[match.end():]
+    match=re.search(p5,s,re.A)
+    if match==None or (re.search(p12,s[:match.end()],re.A)!=None):
+        s4=''
+    else:
+        s4=s[:match.end()]
+    if match!=None and (re.search(p12,s[:match.end()],re.A)==None):
+        s=s[match.end():]
+    if s0=='1':
+        s5=s
+        list1=[s1,s2,s3,s4,s5]
+        data={}
+        data={'名字':name, '手机':tel,'地址':list1}
+        string=json.dumps(data,ensure_ascii=False)
         
+    else:
+        match=re.search(p7,s,re.I)
+        if (match !=None):
+            s5=s[:match.start()]
+            s6=match.group()
+            s=s[match.end():]
+        else:
+            s6=''
+            match=re.search(p6,s,re.A)
+            if match==None:
+                s5=''
+            else:
+                s5=s[:match.end()]
+                s=s[match.end():]
+        s7=s
+        if s0=='3':
+            url='https://restapi.amap.com/v3/geocode/geo?address='+s9+'&output=XML&key=55102a2c4b79bf8c87cab849177e086a'
+            #print(s9)
+            al=requests.get(url).text
+            match=re.search(p13,str(al),re.I)
+            url='https://restapi.amap.com/v3/geocode/regeo?output=xml&location='+match.group()+'&key=55102a2c4b79bf8c87cab849177e086a&radius=1000&extensions=base'
+            al=requests.get(url).text
+            al=str(al)
+            p=re.compile('<province>(.+?)</')
+            s1=p.findall(al)[0]
+            p=re.compile('<city>(.+?)</')
+            s2=p.findall(al)[0]
+            if (s1=='上海市')or( s1=='北京市')or( s1=='重庆市')or( s1=='天津市'):
+                s2=s1
+                s1=s1[0:2]
+            p=re.compile('<district>(.+?)</')
+            s3=p.findall(al)[0]
+            p=re.compile('<township>(.+?)</')
+            s4=p.findall(al)[0]
+        list1=[s1,s2,s3,s4,s5,s6,s7]
+        data={'名字':name, '手机':tel,'地址':list1}
+        string=json.dumps(data,ensure_ascii=False)
+        #string=r'{"姓名":"'+name+r'","手机":"'+str(tel)+r'","地址":["'+s1+r'","'+s2+r'","'+s3+r'","'+s4+r'","'+s5+r'","'+s6+r'","'+s7+r'"]},'
+    print(string)
+
+            
+
 
