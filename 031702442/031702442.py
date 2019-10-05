@@ -82,7 +82,7 @@ while 1:
         s5=s
         list1=[s1,s2,s3,s4,s5]
         data={}
-        data={'名字':name, '手机':tel,'地址':list1}
+        data={'姓名':name, '手机':tel,'地址':list1}
         string=json.dumps(data,ensure_ascii=False)
         
     else:
@@ -120,7 +120,7 @@ while 1:
             p=re.compile('<township>(.+?)</')
             s4=p.findall(al)[0]
         list1=[s1,s2,s3,s4,s5,s6,s7]
-        data={'名字':name, '手机':tel,'地址':list1}
+        data={'姓名':name, '手机':tel,'地址':list1}
         string=json.dumps(data,ensure_ascii=False)
         #string=r'{"姓名":"'+name+r'","手机":"'+str(tel)+r'","地址":["'+s1+r'","'+s2+r'","'+s3+r'","'+s4+r'","'+s5+r'","'+s6+r'","'+s7+r'"]},'
     print(string)
